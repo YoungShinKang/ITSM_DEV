@@ -20,6 +20,7 @@ import IssueDetails from './IssueDetails/ProjectBoardIssueDetails';
 import { createQueryParamModalHelpers } from 'common/utils/queryParamModal';
 
 
+
 const Project = () => {
 
   
@@ -47,7 +48,7 @@ const Project = () => {
 
   return (
     <ProjectPage>
-
+      {/** 이 left 바는 만약 로그인이 되어 있지 않다면 화면에 표시되지 않아야 한다. */}
       <NavbarLeft
         issueCreateModalOpen={issueCreateModalHelpers.open}
       />
@@ -64,6 +65,10 @@ const Project = () => {
       )}
 
       <Routes>
+        <Route
+          path="login"
+          element={<Board project={project} />}
+        />
         <Route
           path="board"
           element={<Board project={project} />}
