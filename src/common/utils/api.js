@@ -3,7 +3,8 @@ import axios from 'axios';
 import { objectToQueryString } from 'common/utils/url';
 
 const defaults = {
-  baseURL: 'http://localhost:8080',
+  //baseURL: 'http://localhost:8080',
+  baseURL: '',
   headers: () => ({
     'Content-Type': 'application/json',
   }),

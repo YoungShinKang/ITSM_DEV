@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Routes, Route, Redirect } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Redirect, Navigate   } from 'react-router-dom';
 import { createBrowserHistory } from 'history'
 
 import Project from 'Project/Project';
@@ -17,7 +17,7 @@ const ItsmRoutes = () => (
         <Route path="/login" element={<LoginComponent />} />
         <Route path="/project/*" element={<Project />} />
         <Route path="/error" element={<PageError />} />
-        <Route element={<PageError />} />
+        <Route path="*" element={<Navigate to="/login" replace />} />
       </Routes>
     </BrowserRouter>
   </AuthContextProvider>

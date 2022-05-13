@@ -38,23 +38,6 @@ const ProjectBoard = () => {
     searchServiceRequestList();
   }, []);
 
-  /*
-  const [data, setData] = useState([]);
-
-  useEffect(() => {
-      axios.post('http://localhost:8080/board/searchServiceRequestList',
-        {
-          page:1,
-          start:0,
-          limit:10,
-          sd_list_type:'ING',
-        }
-      ).then(response => {
-          setData(response.data);
-          });
-  }, []);
-  */
-
   if (data == null) {
     return <h1>로딩</h1>;
   }

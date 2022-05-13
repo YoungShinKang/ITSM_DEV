@@ -66,10 +66,6 @@ const Project = () => {
 
       <Routes>
         <Route
-          path="login"
-          element={<Board project={project} />}
-        />
-        <Route
           path="board"
           element={<Board project={project} />}
         />
