@@ -1,7 +1,8 @@
-import autnContext from './authContext';
+import authContext from './authContext';
 import {useState} from 'react';
 
 const AuthContextProvider = ({children}) => {
+
 
     const setLoggedUser = (data) => {
         setAuth(prevState => (
@@ -22,7 +23,10 @@ const AuthContextProvider = ({children}) => {
     }
 
     const initialAuth = {
-        loggedUser: {},
+        loggedUser: {
+            username : '',
+            token : '',
+        },
         loggedIn: false,
         setLoggedUser,
         setLoggedIn
@@ -31,10 +35,11 @@ const AuthContextProvider = ({children}) => {
     const [auth, setAuth] = useState(initialAuth);
 
     return (
-        <autnContext.Provider value={auth}>
+        <authContext.Provider value={auth}>
             {children}
-        </autnContext.Provider>
+        </authContext.Provider>
     )
+
 }
 
 export default AuthContextProvider;

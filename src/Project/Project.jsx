@@ -1,5 +1,5 @@
 //import React from 'react';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import Board from './Board/Board';
 import RequestBoard from './RequestBoard/RequestBoard';
@@ -18,6 +18,9 @@ import Modal from 'common/components/Modal/Modal';
 import IssueDetails from './IssueDetails/ProjectBoardIssueDetails';
 
 import { createQueryParamModalHelpers } from 'common/utils/queryParamModal';
+import authContext from 'common/utils/authContext';
+
+import { useNavigate } from 'react-router-dom'
 
 
 
@@ -26,17 +29,32 @@ const Project = () => {
   
   const issueCreateModalHelpers = createQueryParamModalHelpers('issue-create');
 
+  //로그인 상태 context 호출
+  const { loggedUser, loggedIn } = useContext(authContext);
+
+  //로그인 되지 않았으면 redirect
+  const navigate = useNavigate();
+  if(!loggedIn) navigate('/login', {replace: true});
+
+  const propsVariables = {
+    headers : {
+      'Content-Type': 'application/json',
+      'Authorization': loggedIn ? `Bearer ${loggedUser.token}` : undefined,
+    },
+    isAuthHeader : true,
+  }
+
+  const [{ data, error, setLocalData }, fetchProject] = useApi.get('/board/list/test1',propsVariables);
+  //const [{ data, error, setLocalData }, fetchProject] = useApi.get('/board/list/test1');
   //data는 response, setLocalData는 내부 데이터 업데이트 방법(즉 여기에 함수를 인자로 호출하면 그 방식대로 data가 업됨)
   //fetchProject는 부르는 메소트(실제로는 makerequest 였음)
   //const [{ data, error, setLocalData }, fetchProject] = useQuery('/board/list/test1');
-  const [{ data, error, setLocalData }, fetchProject] = useApi.get('/board/list/test1');
-  //const [{ data, error, setLocalData }, fetchProject] = useQueryMock('/board/list/test1');
 
   if (!data) {
     return <PageLoader />;
   }
-
   const project = {...data};
+
   /*
   정확히 모르는데, 원래의 코드인 아래 코드는 동작하지 않는다. 위의 코드로 고친다.
   원인은 단순했다. 아래 구조분해는 data.project를 project에 넣는다는 말인데..나는 data에

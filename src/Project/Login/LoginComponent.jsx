@@ -1,26 +1,31 @@
-import React, {useState, useEffect} from 'react'
-import useManageAuth from 'common/hooks/manageAuth'
+import React, {useState, useEffect, useContext} from 'react'
 import useApi from 'common/hooks/api';
 import toast from 'common/utils/toast';
+import authContext from 'common/utils/authContext';
+import { useNavigate } from 'react-router-dom'
+
+
 import PageLoader from 'common/components/PageLoader/PageLoader'
-
 import axios from 'axios'
-
 import api from 'common/utils/api';
 
 function LoginComponent(props) {
 
+    //사용자가 입력하는 username, password
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const [token, setToken] = useState(localStorage.getItem("token") || '');
+
     const [hasLoginFailed, setHasLoginFailed] = useState(false);
     const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+
+    const { setLoggedUser, setLoggedIn } = useContext(authContext);
 
     const onChangeUsername = event => setUsername(event.target.value);
     const onChangePassword = event => setPassword(event.target.value);
 
-    
-    const [{ data, error, isWorking }, loginRequest] = useApi.post('/auth/login');
+    const navigate = useNavigate();
+
+    const [{ data, error, isWorking }, loginRequest] = useApi.post('/auth/authenticate');
     const login = async (username, password) => {
         try {
             await loginRequest({
@@ -41,9 +46,11 @@ function LoginComponent(props) {
     
     useEffect(() => {
         if(data != null) {
-            setShowSuccessMessage(true); //여기서 값을 바꿔도 rerendering 되지 않는다.....
-            setToken(data.token);
-            console.log('token_val :'+data.token);
+            //console.log('token_val :'+data.token);
+            //localStorage.setItem('token', data.token);
+            setLoggedUser(data);
+            setLoggedIn(true);
+            navigate(`/project/board`, {replace: true});
         }
       }, [data]);
     
@@ -130,20 +137,14 @@ function LoginComponent(props) {
         또 호출됨..무한반복) 반복을 피하기 위해서 useEffect를 쓰며, 그리고 api 호출의 async 값이 업데이트 되었음을
         확인하는 data 값을 두번째 인자로 줌으로써 api 응답이 왔음을 확인한다.
 
+    자체 api를 사용할 때 응답값이 state로 관리가 되면 해당 데이터가 변경될 때 re-rendering 된다. 즉 화면에 그리는 것 외에
+    다른 작업이 필요하면  useEffect가 필요하다는 것이다. 이때 useEffect의 두번째 인자를 셋팅해야 한다.
 
-     */
+    자체 api를 쓰더라도 state로 관리하지 않으려면 두번째 샘플처럼 sync, await 처리를 하면 된다.
 
-    
 
-    
-    
+     */  
 
-    /*
-    //위의 2개의 경우 호출은 정상적으로 되는데, 이벤트 이후에 상태 처리가
-    //어렵다. 즉 onLoginClick 에서 호출의 결과값을 이용해서 state 변경이라던지
-    //redirect 같은게 어렵다. 아래와 같이 onLoginClick 안에서 확실한 then 구문이 있어야 한다.
-    
-    */
 
     return (
         <div>

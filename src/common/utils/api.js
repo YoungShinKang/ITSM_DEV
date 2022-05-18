@@ -7,6 +7,7 @@ const defaults = {
   baseURL: '',
   headers: () => ({
     'Content-Type': 'application/json',
+    //Authorization: localStorage.getItem('token') ? `Bearer ${localStorage.getItem('token')}` : undefined,
   }),
   error: {
     code: 'INTERNAL_ERROR',
@@ -16,12 +17,12 @@ const defaults = {
   },
 };
 
-const api = (method, url, variables) =>
+const api = (method, url, variables) => 
   new Promise((resolve, reject) => {
     axios({
       url: `${defaults.baseURL}${url}`,
       method,
-      headers: defaults.headers(),
+      headers: variables.isAuthHeader ?  variables.headers : defaults.headers(),
       params: method === 'get' ? variables : undefined,
       data: method !== 'get' ? variables : undefined,
       paramsSerializer: objectToQueryString,
@@ -36,6 +37,7 @@ const api = (method, url, variables) =>
       },
     );
   });
+
 
 const optimisticUpdate = async (url, { updatedFields, currentFields, setLocalData }) => {
   try {
