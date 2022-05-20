@@ -8,7 +8,41 @@ import Issue from './Issue/Issue';
 import { List, Title, IssuesCount, Issues } from './ListStyles';
 
 
-const ProjectBoardList = ({ status, data }) => {
+const ProjectBoardList = ({ status }) => {
+
+  const [{ data, error, isWorking }, searchServiceRequest] = useApi.post('/board/searchServiceRequestList');
+  //const [{ data, error, setLocalData }, fetchProject] = useQueryMock('/board/list/test1');
+
+  const searchServiceRequestList = async () => {
+    try {
+      await searchServiceRequest({
+        page:1,
+        start:0,
+        limit:10,
+        sd_list_type:'ING',
+      });
+    } catch (error) {
+      toast.error(error);
+    }
+  };
+
+  /* 처음에는 아래와 같이 useEffect를 쓰지 않고 바로 메소드를 호출함.
+  무한반복 에러? 같은게 남..렌더링이 도를 넘었다와 같은거...
+  아래와 같이 useEffect를 함. 그러고 보니 아래의 sample도 쓰고 있음.
+  get은 왜 그냥 쓰지 하고 살펴보니 이미 훅 내부에서 쓰고 있음
+  */
+
+  useEffect(() => {
+    searchServiceRequestList();
+  }, []);
+
+  if (data == null) {
+    return <h1>로딩</h1>;
+  }
+
+  if (data.length == 0) {
+    return <h1>로딩</h1>;
+  } 
   
   const filteredListIssues = filterIssues(data.gridVO.rows, status);
   
