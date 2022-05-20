@@ -1,5 +1,8 @@
-import React from 'react';
+import React, { useEffect, useContext } from 'react';
 import PropTypes from 'prop-types';
+
+import authContext from 'common/utils/authContext';
+import { useNavigate } from 'react-router-dom'
 
 
 import { IssueStatusCopy } from 'common/utils/syscode';
@@ -7,11 +10,21 @@ import { IssueStatusCopy } from 'common/utils/syscode';
 import Issue from './Issue/Issue';
 import { List, Title, IssuesCount, Issues } from './ListStyles';
 
+import useApi from 'common/hooks/api';
+import PageLoader from 'common/components/PageLoader/PageLoader'
+import toast from 'common/utils/toast';
+
 
 const ProjectBoardList = ({ status }) => {
 
+  //로그인 상태 context 호출
+  const { loggedUser, loggedIn } = useContext(authContext);
+
+  //로그인 되지 않았으면 redirect
+  const navigate = useNavigate();
+  if(!loggedIn) navigate('/login', {replace: true});
+
   const [{ data, error, isWorking }, searchServiceRequest] = useApi.post('/board/searchServiceRequestList');
-  //const [{ data, error, setLocalData }, fetchProject] = useQueryMock('/board/list/test1');
 
   const searchServiceRequestList = async () => {
     try {
@@ -20,6 +33,14 @@ const ProjectBoardList = ({ status }) => {
         start:0,
         limit:10,
         sd_list_type:'ING',
+        status,
+        user_id:loggedUser.username,
+        //header도 추가로 넣어줘야 한다.
+        headers : {
+          'Content-Type': 'application/json',
+          'Authorization': loggedIn ? `Bearer ${loggedUser.token}` : undefined,
+        },
+        isAuthHeader : true,
       });
     } catch (error) {
       toast.error(error);
@@ -31,7 +52,6 @@ const ProjectBoardList = ({ status }) => {
   아래와 같이 useEffect를 함. 그러고 보니 아래의 sample도 쓰고 있음.
   get은 왜 그냥 쓰지 하고 살펴보니 이미 훅 내부에서 쓰고 있음
   */
-
   useEffect(() => {
     searchServiceRequestList();
   }, []);
@@ -43,37 +63,24 @@ const ProjectBoardList = ({ status }) => {
   if (data.length == 0) {
     return <h1>로딩</h1>;
   } 
-  
-  const filteredListIssues = filterIssues(data.gridVO.rows, status);
+
+  //이 리스트에서는 아래의 필터링이 필요가 없다. 어짜피 status에 맞게 불러온다.
+  //const filteredListIssues = filterIssues(data.gridVO.rows, status);
+  const rows = data.gridVO.rows;
   
   return (
     <List>
       <Title>
         {`${IssueStatusCopy[status]} `}
-        <IssuesCount>{formatIssuesCount(data.gridVO.totalCount, filteredListIssues)}</IssuesCount>
+        <IssuesCount>{formatIssuesCount(data.gridVO.totalCount, rows)}</IssuesCount>
       </Title>
       <Issues>
-        {filteredListIssues.map((issue, index) => (
+        {rows.map((issue, index) => (
           <Issue issue={issue} />
         ))}
       </Issues>
     </List>
   );
-};
-
-//이게 의미가 없을 것 같다. 원칙적인 방법이라면, 이미 최소한의 데이터만 필터링이 되어 있어야 한다.
-//const filterIssues = (projectIssues, filters, currentUserId) => {
-//근데, 이게 또 이미 데이터가 로딩된 상황이라면, 어떻까? 
-//아무리 봐도 이건 의미가 없어 보이긴 한다. 쓸지 말지를 고려해 보자..
-
-//기본적으로 filter 이슈는 status (진행상태) 중심으로 구분을 하니거니....
-//원본과는 다르게 사용자는 넘어가지 않는다.
-const filterIssues = (rows, status) => {
-  
-  let issues = rows;
-  issues = issues.filter(issue => issue.WORK_STATE.includes(status));
-
-  return issues;
 };
 
 const formatIssuesCount = (totalCount, filteredListIssues) => {

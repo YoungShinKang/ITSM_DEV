@@ -50,7 +50,7 @@ function LoginComponent(props) {
             //localStorage.setItem('token', data.token);
             setLoggedUser(data);
             setLoggedIn(true);
-            navigate(`/project/board`, {replace: true});
+            navigate(`/project/readyboard`, {replace: true});
         }
       }, [data]);
     

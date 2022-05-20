@@ -4,15 +4,8 @@ import PropTypes from 'prop-types';
 import Breadcrumbs from 'common/components/Breadcrumbs/Breadcrumbs';
 
 import Lists from './Lists/Lists';
-import useApi from 'common/hooks/api';
-import PageLoader from 'common/components/PageLoader/PageLoader'
-
-import toast from 'common/utils/toast';
-import axios from 'axios';
 
 const ProjectBoard = () => {
-
-
 
   //실제로는 파라미터로 넘어오는 project에서 issuIssueStatuseState 를 받아야 한다.
   //무슨말이냐면 사용자별로 IssueStatus가 달라질 수 있다. 
@@ -22,12 +15,10 @@ const ProjectBoard = () => {
     SERVICE_CHECK : 'SERVICE_GROUP',  //SERVICEDESK
   };
 
-
   return (
     <Fragment>
       <Breadcrumbs items={['Projects', 'ready list', 'Itsm v0.1']} />
       <Lists
-        data={data}
         IssueStatus={IssueStatus}
       />
     </Fragment>
