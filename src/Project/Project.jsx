@@ -10,8 +10,6 @@ import { ProjectPage } from './Styles';
 
 import PageLoader from 'common/components/PageLoader/PageLoader'
 
-import useQuery from 'common/hooks/api/query';
-import useQueryMock from 'common/hooks/api/queryMock';
 import useApi from 'common/hooks/api';
 
 import Modal from 'common/components/Modal/Modal';
@@ -23,9 +21,7 @@ import authContext from 'common/utils/authContext';
 import { useNavigate } from 'react-router-dom'
 
 
-
 const Project = () => {
-
   
   const issueCreateModalHelpers = createQueryParamModalHelpers('issue-create');
 

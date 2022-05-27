@@ -1,23 +1,22 @@
 import React, { useState, useEffect, useContext } from 'react';
-import PropTypes from 'prop-types';
 
 import authContext from 'common/utils/authContext';
 import { useNavigate } from 'react-router-dom'
 
+import { IssueStatusCopy, columnData } from 'common/utils/syscode';
 
-import { IssueStatusCopy } from 'common/utils/syscode';
-
-import Issue from './Issue/Issue';
-import { List, Title, IssuesCount, Issues } from './ListStyles';
+import { List, Title, IssuesCount, Table } from './ListStyles';
 
 import useApi from 'common/hooks/api';
-import PageLoader from 'common/components/PageLoader/PageLoader'
 import toast from 'common/utils/toast';
-
-import './Paging.css'; 
 import Pagination from "react-js-pagination";
 
-const PagingBoardList = ({ status }) => {
+import './Paging.css'; 
+
+import ProjectBoardTableIssue from './Table/Table';
+
+
+const PagingBoardTable = ({ status }) => {
 
   const [page, setPage] = useState(1); 
   
@@ -74,9 +73,9 @@ const PagingBoardList = ({ status }) => {
     searchServiceRequestList(page);
   };
 
-  //이 리스트에서는 아래의 필터링이 필요가 없다. 어짜피 status에 맞게 불러온다.
-  //const filteredListIssues = filterIssues(data.gridVO.rows, status);
   const rows = data.gridVO.rows;
+
+  //const columnData
   
   return (
     <List>
@@ -84,29 +83,36 @@ const PagingBoardList = ({ status }) => {
         {`${IssueStatusCopy[status]} `}
         <IssuesCount>{formatIssuesCount(data.gridVO.totalCount, rows)}</IssuesCount>
       </Title>
-      <Issues>
-        {rows.map((issue, index) => (
-          <Issue issue={issue} />
-        ))}
-      </Issues>
-      <Pagination 
-        activePage={page} 
-        itemsCountPerPage={20} 
-        totalItemsCount={data.gridVO.totalCount} 
-        pageRangeDisplayed={5} 
-        prevPageText={"‹"} 
-        nextPageText={"›"} 
-        onChange={handlePageChange} 
-      />
+      <Table>
+        <ProjectBoardTableIssue
+          columns={columnData}
+          data={rows}         
+          getRowProps={row => ({
+            style: {
+              background: row.index % 2 === 0 ? 'rgba(0,0,0,.1)' : 'white',
+            },
+          })}
+
+        />
+    </Table>
+    <Pagination 
+      activePage={page} 
+      itemsCountPerPage={20} 
+      totalItemsCount={data.gridVO.totalCount} 
+      pageRangeDisplayed={5} 
+      prevPageText={"‹"} 
+      nextPageText={"›"} 
+      onChange={handlePageChange} 
+    />
     </List>
   );
 };
 
-const formatIssuesCount = (totalCount, filteredListIssues) => {
-  if (totalCount !== filteredListIssues.length) {
-    return `${filteredListIssues.length} of ${totalCount}`;
+const formatIssuesCount = (totalCount, requestRows) => {
+  if (totalCount !== requestRows.length) {
+    return `${requestRows.length} of ${totalCount}`;
   }
   return totalCount;
 };
 
-export default PagingBoardList;
+export default PagingBoardTable;

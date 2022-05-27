@@ -59,3 +59,49 @@
     [IssuePriority.LOW]: 'Low',
     [IssuePriority.LOWEST]: 'Lowest',
   };
+
+
+  //"SR_ID":"SR220421_4044"
+  //"SERVICE_TYPE":"08","SERVICE_TYPE_NM":"PUSH서비스"
+  //"REQ_USER_ID" : "2017057", "REQ_USER_NM":"이지현"
+  //"REQ_DT":"2022-04-21 15:24"
+  //"SYSTEM_TYPE":"AP15010003","SYSTEM_TYPE_NM":"NCS"
+  //"SUB_WORK":" 0002987","SUB_WORK_NM":"통합관리"
+  //"WORK_STATE":"SERVICE_CHECK", "TASK_NAME":"서비스결과검토"
+  //"TITLE":"서비스 안내 팝업 작성요청"
+
+
+  export const columnData = [
+    {
+      accessor: 'SR_ID',
+      Header: '요청번호',
+    },
+    {
+      accessor: 'TITLE',
+      Header: '타이틀',
+    },
+    {
+      accessor: 'SERVICE_TYPE_NM',
+      Header: '요청 유형',
+    },
+    {
+      accessor: 'REQ_USER_ID',
+      Header: '요청자 ID',
+    },
+    {
+      accessor: 'REQ_USER_NM',
+      Header: '요청자',
+    },
+    {
+      accessor: 'SYSTEM_TYPE_NM',
+      Header: '시스템',
+    },
+    {
+      accessor: 'SUB_WORK_NM',
+      Header: '시스템 업무',
+    },
+    {
+      accessor: 'REQ_DT',
+      Header: '요청일',
+    },
+]
