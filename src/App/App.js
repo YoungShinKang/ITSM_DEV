@@ -9,6 +9,10 @@ import BaseStyles from './BaseStyles';
 // https://github.com/styled-components/styled-components/issues/1593
 import './fontStyles.css';
 
+import "./assets/plugins/nucleo/css/nucleo.css";
+import "@fortawesome/fontawesome-free/css/all.min.css";
+import "./assets/scss/argon-dashboard-react.scss";
+
 
 import ItsmRoutes from './ItsmRoutes';
 
