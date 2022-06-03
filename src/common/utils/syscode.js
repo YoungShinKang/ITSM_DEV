@@ -71,7 +71,7 @@
   //"TITLE":"서비스 안내 팝업 작성요청"
 
 
-  export const columnData = [
+  export const srColumnData = [
     {
       accessor: 'SR_ID',
       Header: '요청번호',

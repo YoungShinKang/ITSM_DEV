@@ -73,7 +73,8 @@ const Login = () => {
           //localStorage.setItem('token', data.token);
           setLoggedUser(data);
           setLoggedIn(true);
-          navigate(`/project/readyboard`, {replace: true});
+          //navigate(`/project/readyboard`, {replace: true});
+          navigate(`/project/dashBoard`, {replace: true});
       }
     }, [data]);
 

@@ -32,6 +32,7 @@ export const Issues = styled.div`
   padding: 0 5px;
 `;
 
+
 export const Table = styled.div`
   padding: 0 5px;
 

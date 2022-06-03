@@ -2,6 +2,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import Board from './Board/Board';
+import DashBoard from './DashBoard/DashBoard';
 import RequestBoard from './RequestBoard/RequestBoard';
 import NavbarLeft from './NavbarLeft/NavbarLeft';
 import IssueCreate from './IssueCreate/IssueCreate';
@@ -40,7 +41,7 @@ const Project = () => {
     isAuthHeader : true,
   }
 
-  const [{ data, error, setLocalData }, fetchProject] = useApi.get('/board/list/test1',propsVariables);
+  const [{ data, error, setLocalData }, fetchProject] = useApi.get(`/user/role/${loggedUser.username}`,propsVariables);
   //const [{ data, error, setLocalData }, fetchProject] = useApi.get('/board/list/test1');
   //data는 response, setLocalData는 내부 데이터 업데이트 방법(즉 여기에 함수를 인자로 호출하면 그 방식대로 data가 업됨)
   //fetchProject는 부르는 메소트(실제로는 makerequest 였음)
@@ -49,14 +50,26 @@ const Project = () => {
   if (!data) {
     return <PageLoader />;
   }
-  const project = {...data};
+  const rows = data.gridVO.rows;
 
-  /*
-  정확히 모르는데, 원래의 코드인 아래 코드는 동작하지 않는다. 위의 코드로 고친다.
-  원인은 단순했다. 아래 구조분해는 data.project를 project에 넣는다는 말인데..나는 data에
-  project라는 이름의 항목을 넣지 않았기 때문이다.....(원래는 data 안에 project로 한번 더 싸져 있었다.)
-  */
-  //const { project } = data;
+  //여기서 rows를 검사해서 Role을 뽑아낸다.
+  const sDeskRole = rows.filter(row => row.AUTH_ID == 'sdesk');
+  const commUserRole = rows.filter(row => row.AUTH_ID == 'COMM_USER');
+  const role2Role = rows.filter(row => row.AUTH_ID == 'ROLE2');
+
+  const { userRole, setUserRole } = useState('');
+
+  if(sDeskRole.length > 0) {
+    setUserRole('sdesk');
+  } else if(role2Role.length > 0) {
+    setUserRole('ROLE2');
+  } else if(commUserRole.length > 0) {
+    setUserRole('COMM_USER');  
+  }
+
+  if (userRole == '') {
+    return <h1>사용자 권한 없음</h1>;
+  }
 
   const updateLocalProjectIssues = () => {};
 
@@ -74,18 +87,22 @@ const Project = () => {
           width={800}
           withCloseIcon={false}
           onClose={issueCreateModalHelpers.close}
-          renderContent={() => <Board project={project} />}
+          renderContent={() => <Board />}
         />
       )}
 
       <Routes>
         <Route
+          path="dashBoard"
+          element={<DashBoard userId={loggedUser.username} role={userRole}/>}
+        />
+        <Route
           path="board"
-          element={<Board project={project} />}
+          element={<Board userId={loggedUser.username} role={userRole} />}
         />
         <Route
           path="readyboard"
-          element={<RequestBoard />}
+          element={<RequestBoard userId={loggedUser.username} role={userRole}/>}
         />
         <Route
           path="openIssue"
@@ -99,7 +116,7 @@ const Project = () => {
               renderContent={modal => (
                 <IssueDetails
                   issueId={"issueid"}
-                  projectUsers={project.users}
+                  userId={loggedUser.username} role={userRole}
                   fetchProject={fetchProject}
                   updateLocalProjectIssues={updateLocalProjectIssues}
                   modalClose={modal.close}
@@ -119,7 +136,7 @@ const Project = () => {
                 onClose={issueCreateModalHelpers.close}
                 renderContent={modal => (
                   <IssueCreate
-                    project={project}
+                    userId={loggedUser.username} role={userRole}
                     fetchProject={fetchProject}
                     onCreate={() => {}}
                     modalClose={modal.close}

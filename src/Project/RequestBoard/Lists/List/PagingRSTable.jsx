@@ -13,10 +13,10 @@ import Pagination from "react-js-pagination";
 
 import './Paging.css'; 
 
-import ProjectBoardTableIssue from './Table/Table';
+import RSTable from './Table/RSTable';
 
 
-const PagingBoardTable = ({ status }) => {
+const PagingBoardRSTable = ({ status }) => {
 
   const [page, setPage] = useState(1); 
   
@@ -83,27 +83,19 @@ const PagingBoardTable = ({ status }) => {
         {`${IssueStatusCopy[status]} `}
         <IssuesCount>{formatIssuesCount(data.gridVO.totalCount, rows)}</IssuesCount>
       </Title>
-      <Table>
-        <ProjectBoardTableIssue
-          columns={srColumnData}
-          data={rows}         
-          getRowProps={row => ({
-            style: {
-              background: row.index % 2 === 0 ? 'rgba(0,0,0,.1)' : 'white',
-            },
-          })}
-
-        />
-    </Table>
-    <Pagination 
-      activePage={page} 
-      itemsCountPerPage={20} 
-      totalItemsCount={data.gridVO.totalCount} 
-      pageRangeDisplayed={5} 
-      prevPageText={"‹"} 
-      nextPageText={"›"} 
-      onChange={handlePageChange} 
-    />
+      <RSTable
+        columns={srColumnData}
+        data={rows} 
+      />
+      <Pagination 
+        activePage={page} 
+        itemsCountPerPage={20} 
+        totalItemsCount={data.gridVO.totalCount} 
+        pageRangeDisplayed={5} 
+        prevPageText={"‹"} 
+        nextPageText={"›"} 
+        onChange={handlePageChange} 
+      />
     </List>
   );
 };
@@ -115,4 +107,4 @@ const formatIssuesCount = (totalCount, requestRows) => {
   return totalCount;
 };
 
-export default PagingBoardTable;
+export default PagingBoardRSTable;
