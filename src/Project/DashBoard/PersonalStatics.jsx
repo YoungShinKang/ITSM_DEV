@@ -16,10 +16,53 @@
 
 */
 
+import PageLoader from 'common/components/PageLoader/PageLoader'
+
+import useApi from 'common/hooks/api';
+
 // reactstrap components
 import { Card, CardBody, CardTitle, Container, Row, Col } from "reactstrap";
 
-const PersonalStatics = ({userId}) => {
+const PersonalStatics = ({userId, token}) => {
+
+  const propsVariables = {
+    headers : {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`,
+    },
+    isAuthHeader : true,
+  }
+  
+  const [{ data, error, setLocalData }] = useApi.get(`/dashBoard/simpleStatistics/${userId}`,propsVariables);
+
+  if (!data) {
+    return <PageLoader />;
+  }
+
+
+  const statistics = data.resultMap.requestStatistics;
+
+  //1. 금월 요청 신규/기능개선
+  const newReq = calcNewReq(statistics);
+
+  //2. 금월 요청 데이터처리
+  const dbReq = calcDBReq(statistics);
+
+  //3. 금월 요청 오류수정
+  const defectReq = calcDefectReq(statistics);
+
+  //4. 금월 요청 자료추출
+  const dataReq = calcDataReq(statistics);
+
+  /*
+  let statDatas = {
+    'myValThis':myValThis.toLocaleString('en-US'),
+    'sysValThis':sysValThis.toLocaleString('en-US'),
+    'arrow':arrow,
+    'comp':comp.toLocaleString('en-US'),
+  }
+  */
+
   return (
     <>
       <div className="header bg-gradient-info pb-8 pt-5 pt-md-8">
@@ -36,10 +79,10 @@ const PersonalStatics = ({userId}) => {
                           tag="h5"
                           className="text-uppercase text-muted mb-0"
                         >
-                          Traffic
+                          금월 요청 신규/기능개선
                         </CardTitle>
                         <span className="h2 font-weight-bold mb-0">
-                          350,897
+                          {newReq.myValThis} / {newReq.sysValThis}
                         </span>
                       </div>
                       <Col className="col-auto">
@@ -50,9 +93,9 @@ const PersonalStatics = ({userId}) => {
                     </Row>
                     <p className="mt-3 mb-0 text-muted text-sm">
                       <span className="text-success mr-2">
-                        <i className="fa fa-arrow-up" /> 3.48%
+                        <i className={`fa ${newReq.arrow}`} /> {newReq.comp}건
                       </span>{" "}
-                      <span className="text-nowrap">Since last month</span>
+                      <span className="text-nowrap">전월대비</span>
                     </p>
                   </CardBody>
                 </Card>
@@ -66,9 +109,11 @@ const PersonalStatics = ({userId}) => {
                           tag="h5"
                           className="text-uppercase text-muted mb-0"
                         >
-                          New users
+                          금월 요청 데이터처리
                         </CardTitle>
-                        <span className="h2 font-weight-bold mb-0">2,356</span>
+                        <span className="h2 font-weight-bold mb-0">
+                        {dbReq.myValThis} / {dbReq.sysValThis}
+                        </span>
                       </div>
                       <Col className="col-auto">
                         <div className="icon icon-shape bg-warning text-white rounded-circle shadow">
@@ -78,9 +123,9 @@ const PersonalStatics = ({userId}) => {
                     </Row>
                     <p className="mt-3 mb-0 text-muted text-sm">
                       <span className="text-danger mr-2">
-                        <i className="fas fa-arrow-down" /> 3.48%
+                      <i className={`fa ${dbReq.arrow}`} /> {dbReq.comp}건
                       </span>{" "}
-                      <span className="text-nowrap">Since last week</span>
+                      <span className="text-nowrap">전월대비</span>
                     </p>
                   </CardBody>
                 </Card>
@@ -94,9 +139,11 @@ const PersonalStatics = ({userId}) => {
                           tag="h5"
                           className="text-uppercase text-muted mb-0"
                         >
-                          Sales
+                          금월 요청 오류수정
                         </CardTitle>
-                        <span className="h2 font-weight-bold mb-0">924</span>
+                        <span className="h2 font-weight-bold mb-0">
+                        {defectReq.myValThis} / {defectReq.sysValThis}
+                        </span>
                       </div>
                       <Col className="col-auto">
                         <div className="icon icon-shape bg-yellow text-white rounded-circle shadow">
@@ -106,9 +153,9 @@ const PersonalStatics = ({userId}) => {
                     </Row>
                     <p className="mt-3 mb-0 text-muted text-sm">
                       <span className="text-warning mr-2">
-                        <i className="fas fa-arrow-down" /> 1.10%
+                      <i className={`fa ${defectReq.arrow}`} /> {defectReq.comp}건
                       </span>{" "}
-                      <span className="text-nowrap">Since yesterday</span>
+                      <span className="text-nowrap">전월대비</span>
                     </p>
                   </CardBody>
                 </Card>
@@ -122,9 +169,11 @@ const PersonalStatics = ({userId}) => {
                           tag="h5"
                           className="text-uppercase text-muted mb-0"
                         >
-                          Performance
+                          금월 요청 자료추출
                         </CardTitle>
-                        <span className="h2 font-weight-bold mb-0">49,65%</span>
+                        <span className="h2 font-weight-bold mb-0">
+                        {dataReq.myValThis} / {dataReq.sysValThis}
+                        </span>
                       </div>
                       <Col className="col-auto">
                         <div className="icon icon-shape bg-info text-white rounded-circle shadow">
@@ -134,9 +183,9 @@ const PersonalStatics = ({userId}) => {
                     </Row>
                     <p className="mt-3 mb-0 text-muted text-sm">
                       <span className="text-success mr-2">
-                        <i className="fas fa-arrow-up" /> 12%
+                      <i className={`fa ${dataReq.arrow}`} /> {dataReq.comp}건
                       </span>{" "}
-                      <span className="text-nowrap">Since last month</span>
+                      <span className="text-nowrap">전월대비</span>
                     </p>
                   </CardBody>
                 </Card>
@@ -148,5 +197,144 @@ const PersonalStatics = ({userId}) => {
     </>
   );
 };
+
+/* 1. 금월 요청 신규/기능개선 */
+const calcNewReq = (statistics) => {
+
+  //내가 요청한 금월
+  let myValThis = statistics.find(statistic => statistic.STA_TYPE === 'THIS_MONTH_MY_REQ').NAME1_VALUE
+    + statistics.find(statistic => statistic.STA_TYPE === 'THIS_MONTH_MY_REQ').NAME2_VALUE;
+
+  //전체 요청한 금월 (내가 포함된 시스템들을 대상)
+  let sysValThis = statistics.find(statistic => statistic.STA_TYPE === 'THIS_MONTH_SYSTEM_REQ').NAME1_VALUE
+    + statistics.find(statistic => statistic.STA_TYPE === 'THIS_MONTH_SYSTEM_REQ').NAME2_VALUE;
+
+  //내가 요청한 전월
+  let myValPrev = statistics.find(statistic => statistic.STA_TYPE === 'PREV_MONTH_MY_REQ').NAME1_VALUE
+    + statistics.find(statistic => statistic.STA_TYPE === 'PREV_MONTH_MY_REQ').NAME2_VALUE;
+
+  let arrow = 'fa-arrow-up';
+  let comp = myValThis - myValPrev;
+
+  if(myValThis < myValPrev) {
+    arrow = 'fa-arrow-down';
+    comp = myValPrev - myValThis;
+  }
+
+  let statDatas = {
+    'myValThis':myValThis.toLocaleString('en-US'),
+    'sysValThis':sysValThis.toLocaleString('en-US'),
+    'arrow':arrow,
+    'comp':comp.toLocaleString('en-US'),
+  }
+
+  return statDatas;
+};
+
+/* 2. 금월 요청 데이터처리 */
+const calcDBReq = (statistics) => {
+
+  //내가 요청한 금월
+  let myValThis = statistics.find(statistic => statistic.STA_TYPE === 'THIS_MONTH_MY_REQ').NAME3_VALUE;
+
+  //전체 요청한 금월 (내가 포함된 시스템들을 대상)
+  let sysValThis = statistics.find(statistic => statistic.STA_TYPE === 'THIS_MONTH_SYSTEM_REQ').NAME3_VALUE;
+
+  //내가 요청한 전월
+  let myValPrev = statistics.find(statistic => statistic.STA_TYPE === 'PREV_MONTH_MY_REQ').NAME3_VALUE;
+
+  let arrow = 'fa-arrow-up';
+  let comp = myValThis - myValPrev;
+
+  if(myValThis < myValPrev) {
+    arrow = 'fa-arrow-down';
+    comp = myValPrev - myValThis;
+  }
+
+  let statDatas = {
+    'myValThis':myValThis.toLocaleString('en-US'),
+    'sysValThis':sysValThis.toLocaleString('en-US'),
+    'arrow':arrow,
+    'comp':comp.toLocaleString('en-US'),
+  }
+
+  return statDatas;
+};
+
+/* 3. 금월 요청 오류수정 */
+const calcDefectReq = (statistics) => {
+
+  //내가 요청한 금월
+  let myValThis = statistics.find(statistic => statistic.STA_TYPE === 'THIS_MONTH_MY_REQ').NAME5_VALUE;
+
+  //전체 요청한 금월 (내가 포함된 시스템들을 대상)
+  let sysValThis = statistics.find(statistic => statistic.STA_TYPE === 'THIS_MONTH_SYSTEM_REQ').NAME5_VALUE;
+
+  //내가 요청한 전월
+  let myValPrev = statistics.find(statistic => statistic.STA_TYPE === 'PREV_MONTH_MY_REQ').NAME5_VALUE;
+
+  let arrow = 'fa-arrow-up';
+  let comp = myValThis - myValPrev;
+
+  if(myValThis < myValPrev) {
+    arrow = 'fa-arrow-down';
+    comp = myValPrev - myValThis;
+  }
+
+  let statDatas = {
+    'myValThis':myValThis.toLocaleString('en-US'),
+    'sysValThis':sysValThis.toLocaleString('en-US'),
+    'arrow':arrow,
+    'comp':comp.toLocaleString('en-US'),
+  }
+
+  return statDatas;
+};
+
+/* 4. 금월 요청 자료추출 */
+const calcDataReq = (statistics) => {
+
+  //내가 요청한 금월
+  let myValThis = statistics.find(statistic => statistic.STA_TYPE === 'THIS_MONTH_MY_REQ').NAME6_VALUE;
+
+  //전체 요청한 금월 (내가 포함된 시스템들을 대상)
+  let sysValThis = statistics.find(statistic => statistic.STA_TYPE === 'THIS_MONTH_SYSTEM_REQ').NAME6_VALUE;
+
+  //내가 요청한 전월
+  let myValPrev = statistics.find(statistic => statistic.STA_TYPE === 'PREV_MONTH_MY_REQ').NAME6_VALUE;
+
+  let arrow = 'fa-arrow-up';
+  let comp = myValThis - myValPrev;
+
+  if(myValThis < myValPrev) {
+    arrow = 'fa-arrow-down';
+    comp = myValPrev - myValThis;
+  }
+
+  let statDatas = {
+    'myValThis':myValThis.toLocaleString('en-US'),
+    'sysValThis':sysValThis.toLocaleString('en-US'),
+    'arrow':arrow,
+    'comp':comp.toLocaleString('en-US'),
+  }
+
+  return statDatas;
+};
+
+
+/*  
+"STA_TYPE":"PREV_MONTH_MY_REQ"
+"STA_TYPE":"PREV_MONTH_SYSTEM_REQ"
+"STA_TYPE":"THIS_MONTH_MY_REQ"
+"STA_TYPE":"THIS_MONTH_SYSTEM_REQ"
+"STA_TYPE":"TOTAL_REQ" -- 올해 토탈
+"NAME5_VALUE":오류수정
+"NAME6_VALUE":자료추출
+"NAME7_VALUE":문의응대
+"NAME8_VALUE":Push
+"NAME9_VALUE":합계
+*/
+
+
 
 export default PersonalStatics;

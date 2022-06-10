@@ -5,13 +5,23 @@ import {
   Table,
 } from "reactstrap";
 
+import PropTypes from 'prop-types';
+const propTypes = {
+  title: PropTypes.string,
+  columns: PropTypes.object.isRequired,
+  data: PropTypes.object.isRequired,
+  rowSelectKey: PropTypes.string.isRequired,
+  onClickEvent: PropTypes.func
+};
+
 // Create a default prop getter
 const RSTable = ({ 
   title,
   columns,
   data,
+  rowSelectKey,
+  onClickEvent,
  }) => {
-
 
   return (
     <Card className="shadow">
@@ -23,18 +33,32 @@ const RSTable = ({
             ))}
           </tr>
         </thead>
-        <tbody>
+        {rowSelectKey.length > 0 ?
+          <tbody>
           {data.map(row => (            
-            <tr>
+            <tr data-item={row[rowSelectKey]} onClick={() => {onClickEvent(row[rowSelectKey])}} >
               {columns.map(column => (
                 <td>{row[column.accessor]}</td>
               ))}
           </tr>
           ))}          
-        </tbody>
+          </tbody>
+        :
+          <tbody>
+            {data.map(row => (            
+              <tr>
+                {columns.map(column => (
+                  <td>{row[column.accessor]}</td>
+                ))}
+            </tr>
+            ))}          
+          </tbody>
+        }
       </Table>
     </Card>
   );
 };
+
+RSTable.propTypes = propTypes;
 
 export default RSTable;

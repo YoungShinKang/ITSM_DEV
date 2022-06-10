@@ -26,6 +26,7 @@ const PagingBoardRSTable = ({ status }) => {
 
   //로그인 되지 않았으면 redirect
   const navigate = useNavigate();
+
   if(!loggedIn) navigate('/login', {replace: true});
 
   const [{ data, error, isWorking }, searchServiceRequest] = useApi.post('/board/searchServiceRequestList');
@@ -73,6 +74,10 @@ const PagingBoardRSTable = ({ status }) => {
     searchServiceRequestList(page);
   };
 
+  const handleRowClick = (srId) => { 
+    navigate('/project/openIssue',{state:{srId:srId}, replace: false});
+  };
+
   const rows = data.gridVO.rows;
 
   //const columnData
@@ -86,6 +91,8 @@ const PagingBoardRSTable = ({ status }) => {
       <RSTable
         columns={srColumnData}
         data={rows} 
+        rowSelectKey={'SR_ID'}
+        onClickEvent={handleRowClick}
       />
       <Pagination 
         activePage={page} 

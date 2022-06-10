@@ -48,7 +48,7 @@ import {
 
 import PersonalStatics from "./PersonalStatics";
 
-const dashBoard = ({userId, role}) => {
+const DashBoard = ({userId, token, role}) => {
   const [activeNav, setActiveNav] = useState(1);
   const [chartExample1Data, setChartExample1Data] = useState("data1");
 
@@ -63,7 +63,7 @@ const dashBoard = ({userId, role}) => {
   };
   return (
     <>
-      <PersonalStatics userId={userId}/>
+      <PersonalStatics userId={userId} token={token}/>
       {/* Page content */}
       <Container className="mt--7" fluid>
         <Row>
@@ -335,4 +335,4 @@ const dashBoard = ({userId, role}) => {
   );
 };
 
-export default dashBoard;
+export default DashBoard;

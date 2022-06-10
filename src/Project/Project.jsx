@@ -15,16 +15,19 @@ import useApi from 'common/hooks/api';
 
 import Modal from 'common/components/Modal/Modal';
 import IssueDetails from './IssueDetails/ProjectBoardIssueDetails';
+import SimpleIssueDetail from './IssueDetails/SimpleIssueDetail';
 
 import { createQueryParamModalHelpers } from 'common/utils/queryParamModal';
 import authContext from 'common/utils/authContext';
 
-import { useNavigate } from 'react-router-dom'
+import { useNavigate,useLocation } from 'react-router-dom'
 
 
 const Project = () => {
   
   const issueCreateModalHelpers = createQueryParamModalHelpers('issue-create');
+
+  const [ userRole, setUserRole ] = useState('');
 
   //로그인 상태 context 호출
   const { loggedUser, loggedIn } = useContext(authContext);
@@ -32,6 +35,9 @@ const Project = () => {
   //로그인 되지 않았으면 redirect
   const navigate = useNavigate();
   if(!loggedIn) navigate('/login', {replace: true});
+
+
+  const location = useLocation();
 
   const propsVariables = {
     headers : {
@@ -42,34 +48,36 @@ const Project = () => {
   }
 
   const [{ data, error, setLocalData }, fetchProject] = useApi.get(`/user/role/${loggedUser.username}`,propsVariables);
-  //const [{ data, error, setLocalData }, fetchProject] = useApi.get('/board/list/test1');
-  //data는 response, setLocalData는 내부 데이터 업데이트 방법(즉 여기에 함수를 인자로 호출하면 그 방식대로 data가 업됨)
-  //fetchProject는 부르는 메소트(실제로는 makerequest 였음)
-  //const [{ data, error, setLocalData }, fetchProject] = useQuery('/board/list/test1');
 
-  if (!data) {
-    return <PageLoader />;
-  }
-  const rows = data.gridVO.rows;
+  useEffect(() => {
 
-  //여기서 rows를 검사해서 Role을 뽑아낸다.
-  const sDeskRole = rows.filter(row => row.AUTH_ID == 'sdesk');
-  const commUserRole = rows.filter(row => row.AUTH_ID == 'COMM_USER');
-  const role2Role = rows.filter(row => row.AUTH_ID == 'ROLE2');
+    if (!data) {
+      return <PageLoader />;
+    } 
 
-  const { userRole, setUserRole } = useState('');
+    const sysAuthList = data.resultMap.sysAuthList;
 
-  if(sDeskRole.length > 0) {
-    setUserRole('sdesk');
-  } else if(role2Role.length > 0) {
-    setUserRole('ROLE2');
-  } else if(commUserRole.length > 0) {
-    setUserRole('COMM_USER');  
-  }
+    //여기서 rows를 검사해서 Role을 뽑아낸다.
+    const sDeskRole = sysAuthList.filter(sysAuth => sysAuth.AUTH_ID === 'sdesk');
+    const commUserRole = sysAuthList.filter(sysAuth => sysAuth.AUTH_ID === 'COMM_USER');
+    const role2Role = sysAuthList.filter(sysAuth => sysAuth.AUTH_ID === 'ROLE2');
 
-  if (userRole == '') {
-    return <h1>사용자 권한 없음</h1>;
-  }
+    if(sDeskRole.length > 0) {
+      setUserRole('sdesk');
+    } else if(role2Role.length > 0) {
+      setUserRole('ROLE2');
+    } else if(commUserRole.length > 0) {
+      setUserRole('COMM_USER');  
+    }
+
+    if (userRole == '') {
+      return <h1>사용자 권한 없음</h1>;
+    }
+
+  }, [data]);  
+  
+
+  
 
   const updateLocalProjectIssues = () => {};
 
@@ -94,7 +102,7 @@ const Project = () => {
       <Routes>
         <Route
           path="dashBoard"
-          element={<DashBoard userId={loggedUser.username} role={userRole}/>}
+          element={<DashBoard userId={loggedUser.username} token={loggedUser.token} role={userRole}/>}
         />
         <Route
           path="board"
@@ -111,12 +119,30 @@ const Project = () => {
               isOpen
               testid="modal:issue-details"
               width={1040}
+              withCloseIcon={true}
+              onClose={() => navigate(-1)}
+              renderContent={modal => (
+                <SimpleIssueDetail 
+                  srId = {location.state.srId}                
+                />
+              )}
+            />
+          }
+        />
+        {/*
+        <Route
+          path="openIssue"
+          element={
+            <Modal
+              isOpen
+              testid="modal:issue-details"
+              width={1040}
               withCloseIcon={false}
               onClose={() => {}}
               renderContent={modal => (
                 <IssueDetails
                   issueId={"issueid"}
-                  userId={loggedUser.username} role={userRole}
+                  userId={loggedUser.username} token={loggedUser.token} role={userRole}
                   fetchProject={fetchProject}
                   updateLocalProjectIssues={updateLocalProjectIssues}
                   modalClose={modal.close}
@@ -124,7 +150,8 @@ const Project = () => {
               )}
             />
           }
-        />      
+        />
+        */}      
         <Route
             path="board/createIssue"
             element={
@@ -136,7 +163,7 @@ const Project = () => {
                 onClose={issueCreateModalHelpers.close}
                 renderContent={modal => (
                   <IssueCreate
-                    userId={loggedUser.username} role={userRole}
+                    userId={loggedUser.username} token={loggedUser.token} role={userRole}
                     fetchProject={fetchProject}
                     onCreate={() => {}}
                     modalClose={modal.close}

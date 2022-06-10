@@ -27,8 +27,6 @@ const close = param =>
   });
 
 const isOpen = param => {
-  console.log('isOpen? ')
-  console.log(queryStringToObject(history.location.search)[`modal-${param}`])
   return !!queryStringToObject(history.location.search)[`modal-${param}`];
 }
 
