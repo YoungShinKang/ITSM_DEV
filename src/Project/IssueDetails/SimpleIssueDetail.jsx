@@ -68,22 +68,6 @@ const SimpleIssueDetail = ({srId}) => {
           <Button icon="close" iconSize={24} variant="empty" onClick={modalClose} />
         </TopActionsRight>
       </TopActions>
-      <Content>
-        <Left>
-          <Title issue={issue} updateIssue={updateIssue} />
-          <Description issue={issue} updateIssue={updateIssue} />
-          <Comments issue={issue} fetchIssue={fetchIssue} />
-        </Left>
-        <Right>
-          <Status issue={issue} updateIssue={updateIssue} />
-          {/*
-          <AssigneesReporter issue={issue} updateIssue={updateIssue} projectUsers={projectUsers} />
-          */}
-          <Priority issue={issue} updateIssue={updateIssue} />
-          <EstimateTracking issue={issue} updateIssue={updateIssue} />
-          <Dates issue={issue} />
-        </Right>
-      </Content>
     </Fragment>
   );
 };

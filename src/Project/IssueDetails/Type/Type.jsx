@@ -12,7 +12,7 @@ const propTypes = {
   updateIssue: PropTypes.func.isRequired,
 };
 
-const ProjectBoardIssueDetailsType = ({ issue, updateIssue }) => (
+const ProjectBoardIssueDetailsType = ({ issue }) => (
   <Select
     variant="empty"
     dropdownWidth={150}
@@ -22,15 +22,14 @@ const ProjectBoardIssueDetailsType = ({ issue, updateIssue }) => (
     options={Object.values(IssueType).map(type => ({
       value: type,
       label: IssueTypeCopy[type],
-    }))}
-    onChange={type => updateIssue({ type })}
+    }))}    
     renderValue={({ value: type }) => (
       <TypeButton variant="empty" icon={<IssueTypeIcon type={type} />}>
         {`${IssueTypeCopy[type]}-${issue.id}`}
       </TypeButton>
     )}
     renderOption={({ value: type }) => (
-      <Type key={type} onClick={() => updateIssue({ type })}>
+      <Type key={type}>
         <IssueTypeIcon type={type} top={1} />
         <TypeLabel>{IssueTypeCopy[type]}</TypeLabel>
       </Type>
