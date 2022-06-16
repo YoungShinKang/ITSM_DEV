@@ -12,6 +12,7 @@ const ProjectBoardLists = ({ IssueStatus}) => {
     <Lists>
       {Object.values(IssueStatus).map(status => (
         <PagingRSTable
+          key={status}
           status={status}
         />
       ))}

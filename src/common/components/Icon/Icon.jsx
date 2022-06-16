@@ -4,6 +4,15 @@ import PropTypes from 'prop-types';
 import { StyledIcon } from './Styles';
 
 const fontIconCodes = {
+  [`01`]: '\\e919',
+  [`02`]: '\\e911',
+  [`03`]: '\\e910',
+  [`04`]: '\\e912',
+  [`05`]: '\\e90f',
+  [`06`]: '\\e910',
+  [`07`]: '\\e905',
+  [`08`]: '\\e911',
+  [`09`]: '\\e910',
   [`bug`]: '\\e90f',
   [`stopwatch`]: '\\e914',
   [`task`]: '\\e910',

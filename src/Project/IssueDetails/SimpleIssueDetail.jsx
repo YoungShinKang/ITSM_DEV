@@ -1,4 +1,5 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useContext, useEffect } from 'react';
+import PropTypes from 'prop-types';
 
 import useApi from 'common/hooks/api';
 
@@ -17,8 +18,16 @@ import Priority from './Priority/Priority';
 import EstimateTracking from './EstimateTracking/EstimateTracking';
 import Dates from './Dates/Dates';
 import { TopActions, TopActionsRight, Content, Left, Right } from './Styles';
+import authContext from 'common/utils/authContext';
+import { useNavigate,useLocation } from 'react-router-dom'
+import toast from 'common/utils/toast';
 
-const SimpleIssueDetail = ({srId}) => {  
+const propTypes = {
+  srId: PropTypes.string.isRequired,
+  modalClose: PropTypes.func.isRequired,
+};
+
+const SimpleIssueDetail = ({srId, modalClose}) => {  
   
   //로그인 상태 context 호출
   const { loggedUser, loggedIn } = useContext(authContext);
@@ -47,7 +56,7 @@ const SimpleIssueDetail = ({srId}) => {
   };
 
   useEffect(() => {
-    viewServiceRequestDetail(1);
+    viewServiceRequestDetail(srId);
   }, []);
 
   if (data == null) {
@@ -56,20 +65,30 @@ const SimpleIssueDetail = ({srId}) => {
 
   if (error) return <PageError />;
 
-  const { issue } = data;
-
-
+  const  issue  = data.resultMap;
+  
   return (
     <Fragment>
       <TopActions>
-        <Type issue={issue} updateIssue={updateIssue} />
+        <Type issue={issue} />
         <TopActionsRight>
-          <Delete issue={issue} fetchProject={fetchProject} modalClose={modalClose} />
-          <Button icon="close" iconSize={24} variant="empty" onClick={modalClose} />
+          {/* //delete는 insert 개발 완료 이후로(TO-DO)
+          <Delete issue={issue} />
+          */}          
+          <Button icon="close" iconSize={24} variant="empty" onClick={modalClose} />          
         </TopActionsRight>
       </TopActions>
+      <Content>
+        <Left>
+          <Title issue={issue}  />          
+          <Description issue={issue} />          
+          <Comments issue={issue} />
+        </Left>
+      </Content>
     </Fragment>
   );
 };
+
+SimpleIssueDetail.propTypes = propTypes;
 
 export default SimpleIssueDetail;

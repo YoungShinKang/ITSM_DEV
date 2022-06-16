@@ -18,14 +18,14 @@ const ProjectBoardIssueDetailsType = ({ issue }) => (
     dropdownWidth={150}
     withClearValue={false}
     name="type"
-    value={issue.type}
+    value={issue.SERVICE_TYPE} //ITSM에 맞춰서 수정
     options={Object.values(IssueType).map(type => ({
       value: type,
       label: IssueTypeCopy[type],
     }))}    
     renderValue={({ value: type }) => (
       <TypeButton variant="empty" icon={<IssueTypeIcon type={type} />}>
-        {`${IssueTypeCopy[type]}-${issue.id}`}
+        {`${IssueTypeCopy[type]}-${issue.SR_ID}`}
       </TypeButton>
     )}
     renderOption={({ value: type }) => (

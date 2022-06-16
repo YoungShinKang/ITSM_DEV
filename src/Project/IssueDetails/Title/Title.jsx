@@ -8,10 +8,9 @@ import { TitleTextarea, ErrorText } from './Styles';
 
 const propTypes = {
   issue: PropTypes.object.isRequired,
-  updateIssue: PropTypes.func.isRequired,
 };
 
-const ProjectBoardIssueDetailsTitle = ({ issue, updateIssue }) => {
+const ProjectBoardIssueDetailsTitle = ({ issue }) => {
   const $titleInputRef = useRef();
   const [error, setError] = useState(null);
 
@@ -19,15 +18,13 @@ const ProjectBoardIssueDetailsTitle = ({ issue, updateIssue }) => {
     setError(null);
 
     const title = $titleInputRef.current.value;
-    if (title === issue.title) return;
+    if (title === issue.TITLE) return;
 
     const errors = generateErrors({ title }, { title: [is.required(), is.maxLength(200)] });
 
     if (errors.title) {
       setError(errors.title);
-    } else {
-      updateIssue({ title });
-    }
+    } 
   };
 
   return (
@@ -35,7 +32,7 @@ const ProjectBoardIssueDetailsTitle = ({ issue, updateIssue }) => {
       <TitleTextarea
         minRows={1}
         placeholder="Short summary"
-        defaultValue={issue.title}
+        defaultValue={issue.TITLE}
         ref={$titleInputRef}
         onBlur={handleTitleChange}
         onKeyDown={event => {

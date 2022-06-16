@@ -29,9 +29,15 @@ export const color = {
 };
 
 export const issueTypeColors = {
-  [IssueType.TASK]: '#4FADE6', // blue
-  [IssueType.BUG]: '#E44D42', // red
-  [IssueType.STORY]: '#65BA43', // green
+  [IssueType.NEW_FUCTION]: '#4FADE6', // blue
+  [IssueType.IMPROVEMNT]: '#E44D42', // red
+  [IssueType.DATA_WORK]: '#65BA43', // green
+  [IssueType.DELETE_FUCTION]: '#F89C1C', // orange
+  [IssueType.DEFACT]: '#F4F5F7', // light grey
+  [IssueType.DATA_EXPORT]: '#4FADE6', // blue
+  [IssueType.CALL_RESPONSE]: '#CD1317', // red
+  [IssueType.PUSH]: '#2D8738', // green
+  [IssueType.SUB_REQ]: '#E97F33', // orange
 };
 
 export const issuePriorityColors = {

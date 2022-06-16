@@ -119,11 +119,12 @@ const Project = () => {
               isOpen
               testid="modal:issue-details"
               width={1040}
-              withCloseIcon={true}
+              withCloseIcon={false}
               onClose={() => navigate(-1)}
               renderContent={modal => (
                 <SimpleIssueDetail 
-                  srId = {location.state.srId}                
+                  srId = {location.state.srId}  
+                  modalClose={modal.close}              
                 />
               )}
             />

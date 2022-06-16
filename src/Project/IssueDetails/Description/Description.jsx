@@ -10,27 +10,28 @@ import { Title, EmptyLabel, Actions } from './Styles';
 
 const propTypes = {
   issue: PropTypes.object.isRequired,
-  updateIssue: PropTypes.func.isRequired,
 };
 
-const ProjectBoardIssueDetailsDescription = ({ issue, updateIssue }) => {
-  const [description, setDescription] = useState(issue.description);
+const ProjectBoardIssueDetailsDescription = ({ issue }) => {
+  const [description, setDescription] = useState(issue.CONTENT);
   const [isEditing, setEditing] = useState(false);
 
   const handleUpdate = () => {
     setEditing(false);
-    updateIssue({ description });
+    //이후의 동작은 보류. 필요 없을 가능성이 많다.
+    //editable 상태와 uneditable 상태를 구분해서 동작을 넣어야 할 필요가 있을 것이고..
+    //근본적으로 edit시 전달받은 data를 고치는 것이 필요 할 것 같다.
   };
 
   const isDescriptionEmpty = getTextContentsFromHtmlString(description).trim().length === 0;
 
   return (
     <Fragment>
-      <Title>Description</Title>
+      <Title>내용</Title>
       {isEditing ? (
         <Fragment>
           <TextEditor
-            placeholder="Describe the issue"
+            placeholder="서비스 요청 내용"
             defaultValue={description}
             onChange={setDescription}
           />
@@ -46,7 +47,7 @@ const ProjectBoardIssueDetailsDescription = ({ issue, updateIssue }) => {
       ) : (
         <Fragment>
           {isDescriptionEmpty ? (
-            <EmptyLabel onClick={() => setEditing(true)}>Add a description...</EmptyLabel>
+            <EmptyLabel onClick={() => setEditing(true)}>상세 요청사항을 입력하세요...</EmptyLabel>
           ) : (
             <TextEditedContent content={description} onClick={() => setEditing(true)} />
           )}

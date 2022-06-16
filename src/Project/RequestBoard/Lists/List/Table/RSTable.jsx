@@ -8,8 +8,8 @@ import {
 import PropTypes from 'prop-types';
 const propTypes = {
   title: PropTypes.string,
-  columns: PropTypes.object.isRequired,
-  data: PropTypes.object.isRequired,
+  columns: PropTypes.array.isRequired,
+  data: PropTypes.array.isRequired,
   rowSelectKey: PropTypes.string.isRequired,
   onClickEvent: PropTypes.func
 };
@@ -29,26 +29,26 @@ const RSTable = ({
         <thead className="thead-light">
           <tr>
             {columns.map(column => (
-              <th scope="col">{column.Header}</th>
+              <th scope="col" key={column.Header}>{column.Header}</th>
             ))}
           </tr>
         </thead>
         {rowSelectKey.length > 0 ?
           <tbody>
           {data.map(row => (            
-            <tr data-item={row[rowSelectKey]} onClick={() => {onClickEvent(row[rowSelectKey])}} >
-              {columns.map(column => (
-                <td>{row[column.accessor]}</td>
+            <tr data-item={row[rowSelectKey]} onClick={() => {onClickEvent(row[rowSelectKey])}} key={row[rowSelectKey]} >
+              {columns.map((column,index) => (
+                <td key={index}>{row[column.accessor]}</td>
               ))}
           </tr>
           ))}          
           </tbody>
         :
           <tbody>
-            {data.map(row => (            
-              <tr>
-                {columns.map(column => (
-                  <td>{row[column.accessor]}</td>
+            {data.map((row,index) => (            
+              <tr key={index}>
+                {columns.map((column,index) => (
+                  <td key={index}>{row[column.accessor]}</td>
                 ))}
             </tr>
             ))}          
