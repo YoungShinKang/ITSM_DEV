@@ -12,11 +12,26 @@ export const IssueType = {
   SUB_REQ: '09',
 };
 
+/*
 export const IssueStatus = {
   BACKLOG: 'backlog',
   SELECTED: 'selected',
   INPROGRESS: 'inprogress',
   DONE: 'done',
+};
+*/
+///"TEMP" , "REQUEST" , "SERVICE_GROUP", "SERVICE_RESULT_INSERT","SERVICE_CHECK", "RESULT"    , "END"
+///{"임시저장" , "서비스요청" , "서비스분류"  , "서비스결과등록" ,"서비스결과승인","서비스만족도등록" , ""};
+
+
+export const IssueStatus = {
+  TEMP: 'TEMP',
+  REQUEST: 'REQUEST',
+  SERVICE_GROUP: 'SERVICE_GROUP',
+  SERVICE_RESULT_INSERT: 'SERVICE_RESULT_INSERT',
+  SERVICE_CHECK: 'SERVICE_CHECK',
+  RESULT: 'RESULT',
+  END: 'END',
 };
 
 export const IssuePriority = {
@@ -41,10 +56,13 @@ export const IssueTypeCopy = {
 
 
 export const IssueStatusCopy = {
-  [IssueStatus.BACKLOG]: 'Backlog',
-  [IssueStatus.SELECTED]: 'Selected for development',
-  [IssueStatus.INPROGRESS]: 'In progress',
-  [IssueStatus.DONE]: 'Done',
+  [IssueStatus.TEMP]: '임시저장',
+  [IssueStatus.REQUEST]: '서비스요청',
+  [IssueStatus.SERVICE_GROUP]: '서비스분류',
+  [IssueStatus.SERVICE_RESULT_INSERT]: '서비스결과등록',
+  [IssueStatus.SERVICE_CHECK]: '서비스결과승인',
+  [IssueStatus.RESULT]: '서비스만족도등록',
+  [IssueStatus.END]: '완료',
 };
 
 export const IssuePriorityCopy = {

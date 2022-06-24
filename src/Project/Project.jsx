@@ -47,7 +47,7 @@ const Project = () => {
     isAuthHeader : true,
   }
 
-  const [{ data, error, setLocalData }, fetchProject] = useApi.get(`/user/role/${loggedUser.username}`,propsVariables);
+  const [{ data, error, setLocalData }, ] = useApi.get(`/user/role/${loggedUser.username}`,propsVariables);
 
   useEffect(() => {
 
@@ -165,7 +165,6 @@ const Project = () => {
                 renderContent={modal => (
                   <IssueCreate
                     userId={loggedUser.username} token={loggedUser.token} role={userRole}
-                    fetchProject={fetchProject}
                     onCreate={() => {}}
                     modalClose={modal.close}
                   />

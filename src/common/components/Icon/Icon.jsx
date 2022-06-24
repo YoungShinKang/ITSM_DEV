@@ -4,6 +4,8 @@ import PropTypes from 'prop-types';
 import { StyledIcon } from './Styles';
 
 const fontIconCodes = {
+
+  //아래는 ITSM 유형에 따른 Icon
   [`01`]: '\\e919',
   [`02`]: '\\e911',
   [`03`]: '\\e910',
@@ -14,6 +16,7 @@ const fontIconCodes = {
   [`08`]: '\\e911',
   [`09`]: '\\e910',
   [`bug`]: '\\e90f',
+  ////////////////////////////
   [`stopwatch`]: '\\e914',
   [`task`]: '\\e910',
   [`story`]: '\\e911',
