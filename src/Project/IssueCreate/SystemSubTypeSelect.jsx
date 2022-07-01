@@ -4,20 +4,22 @@ import PropTypes from 'prop-types';
 import useApi from 'common/hooks/api';
 import Form from 'common/components/Form/Form';
 import SystemTypeIcon from 'common/components/SystemTypeIcon/SystemTypeIcon';
+
 import {
   SelectItem,
   SelectItemLabel,
 } from './Styles';
 
 const propTypes = {
-  userId: PropTypes.string.isRequired,
   token: PropTypes.string.isRequired,
-  upperCallBack: PropTypes.func.isRequired,
+  codeId: PropTypes.string.isRequired,
 };
 
 let optionsCopy = [];
 
-const SystemTypeSelect = ({ userId, token, upperCallBack}) => {
+const SystemSubTypeSelect = ({ token, codeId, }) => {
+
+  const [ options, setOptions ] = useState([]);  
   
   const propsVariables = {
     headers : {
@@ -25,17 +27,19 @@ const SystemTypeSelect = ({ userId, token, upperCallBack}) => {
       'Authorization': `Bearer ${token}`
     },
     isAuthHeader : true,
+    CODE : codeId
   }
 
-  const [{ data, error, setLocalData }, ] = useApi.get(`/base/searchServiceCombo/${userId}`,propsVariables);
+  if(codeId == '') codeId='noCode'
 
-  const [ options, setOptions ] = useState([]);
+  const [{data}] = useApi.get(`/base/searchServiceSubCombo/${codeId}`,propsVariables);  
 
   useEffect(() => {
 
-    if (!data) {
+    if (!data || !data.gridVO || !data.gridVO.rows) {
       return <h1>No data</h1>;
     } 
+
     setOptions(data.gridVO.rows);
     optionsCopy = data.gridVO.rows;
   }, [data]);
@@ -45,26 +49,20 @@ const SystemTypeSelect = ({ userId, token, upperCallBack}) => {
     label: option.CODE_TEXT,
   }));
 
-  const onChangeCallback = codeID => {
-    upperCallBack(codeID);
-  }
-
   return (
     <Form.Field.Select
-      name="system_type"
-      label="시스템"
+      name="sub_work"
+      label="하위업무"
       options={typeOptions}
       renderOption={renderType}
       renderValue={renderType}
-      onSelect={onChangeCallback}
     />
   );
-
 };
 
 const renderType = ({ value: CODE_ID }) => (
   <SelectItem>
-    <SystemTypeIcon type={'system'} top={1} />
+    <SystemTypeIcon type={'subSystem'} top={1} />
     {/*
     이건 되지 않는다. options는 참조가 불가능한 배열이다. 스코프가 안쪽이다.
     <SelectItemLabel>{options.find(option => option.CODE_ID === CODE_ID ).CODE_TEXT}</SelectItemLabel>
@@ -74,6 +72,6 @@ const renderType = ({ value: CODE_ID }) => (
   </SelectItem>
 );
 
-SystemTypeSelect.propTypes = propTypes;
+SystemSubTypeSelect.propTypes = propTypes;
 
-export default SystemTypeSelect;
+export default SystemSubTypeSelect;

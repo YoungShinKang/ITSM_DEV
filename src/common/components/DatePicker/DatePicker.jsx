@@ -22,11 +22,15 @@ const defaultProps = {
   value: undefined,
 };
 
-const DatePicker = ({ className, withTime, value, onChange, ...inputProps }) => {
+const DatePicker = ({ className, withTime, value, onChangeCallback, ...inputProps }) => {
   const [isDropdownOpen, setDropdownOpen] = useState(false);
   const $containerRef = useRef();
 
   useOnOutsideClick($containerRef, isDropdownOpen, () => setDropdownOpen(false));
+
+  const onChange = (value) => {
+    onChangeCallback(value);
+  };
 
   return (
     <StyledDatePicker ref={$containerRef}>

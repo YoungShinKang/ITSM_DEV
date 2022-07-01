@@ -32,6 +32,7 @@ const propTypes = {
   withClearValue: PropTypes.bool,
   renderValue: PropTypes.func,
   renderOption: PropTypes.func,
+  onSelect: PropTypes.func,
 };
 
 const defaultProps = {
@@ -48,6 +49,7 @@ const defaultProps = {
   withClearValue: true,
   renderValue: undefined,
   renderOption: undefined,
+  onSelect: undefined,
 };
 
 const Select = ({
@@ -66,6 +68,7 @@ const Select = ({
   withClearValue,
   renderValue: propsRenderValue,
   renderOption: propsRenderOption,
+  onSelect,
 }) => {
   const [stateValue, setStateValue] = useState(defaultValue || (isMulti ? [] : null));
   const [isDropdownOpen, setDropdownOpen] = useState(false);
@@ -112,6 +115,7 @@ const Select = ({
       setStateValue(preserveValueType(newValue));
     }
     onChange(preserveValueType(newValue));
+    if(onSelect != undefined) onSelect(preserveValueType(newValue));
   };
 
   const removeOptionValue = optionValue => {

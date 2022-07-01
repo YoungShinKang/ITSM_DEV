@@ -5,7 +5,7 @@ export const IssueType = {
   IMPROVEMNT: '02',
   DATA_WORK: '03',
   DELETE_FUCTION: '04',
-  DEFACT: '06',
+  DEFACT: '05',
   DATA_EXPORT: '06',
   CALL_RESPONSE: '07',
   PUSH: '08',

@@ -5,7 +5,7 @@ import { StyledIcon } from './Styles';
 
 const fontIconCodes = {
 
-  //아래는 ITSM 유형에 따른 Icon
+  //아래는 ITSM 유형에 따른 Icon (이건 서비스)
   [`01`]: '\\e919',
   [`02`]: '\\e911',
   [`03`]: '\\e910',
@@ -16,6 +16,10 @@ const fontIconCodes = {
   [`08`]: '\\e911',
   [`09`]: '\\e910',
   [`bug`]: '\\e90f',
+  ////////////////////////////  
+  //아래는 시스템 및 서브시스템을 구부하기 위한 Icod
+  [`system`]: '\\e91a',
+  [`subSystem`]: '\\e910',
   ////////////////////////////
   [`stopwatch`]: '\\e914',
   [`task`]: '\\e910',

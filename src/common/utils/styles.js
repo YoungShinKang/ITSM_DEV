@@ -40,6 +40,13 @@ export const issueTypeColors = {
   [IssueType.SUB_REQ]: '#E97F33', // orange
 };
 
+export const systemTypeColors = {
+  system: '#4FADE6', // blue
+  subSystem: '#F89C1C', // orange
+};
+
+
+
 export const issuePriorityColors = {
   [IssuePriority.HIGHEST]: '#CD1317', // red
   [IssuePriority.HIGH]: '#E9494A', // orange

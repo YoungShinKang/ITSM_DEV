@@ -5,7 +5,7 @@ import Board from './Board/Board';
 import DashBoard from './DashBoard/DashBoard';
 import RequestBoard from './RequestBoard/RequestBoard';
 import NavbarLeft from './NavbarLeft/NavbarLeft';
-import IssueCreate from './IssueCreate/IssueCreate';
+import IssueCreate from './IssueCreate/SimpleIssueCreate';
 
 import { ProjectPage } from './Styles';
 
@@ -47,15 +47,19 @@ const Project = () => {
     isAuthHeader : true,
   }
 
-  const [{ data, error, setLocalData }, ] = useApi.get(`/user/role/${loggedUser.username}`,propsVariables);
+  const [{ data, error, setLocalData }, ] = useApi.get(`/user/info/${loggedUser.username}`,propsVariables);
 
-  useEffect(() => {
+  
 
+  useEffect(() => {   
+    
     if (!data) {
       return <PageLoader />;
-    } 
+    }
 
-    const sysAuthList = data.resultMap.sysAuthList;
+    console.log('data :'+JSON.stringify(data));  
+
+    const sysAuthList = data.sysAuthList;
 
     //여기서 rows를 검사해서 Role을 뽑아낸다.
     const sDeskRole = sysAuthList.filter(sysAuth => sysAuth.AUTH_ID === 'sdesk');
@@ -75,11 +79,6 @@ const Project = () => {
     }
 
   }, [data]);  
-  
-
-  
-
-  const updateLocalProjectIssues = () => {};
 
   return (
     <ProjectPage>
@@ -165,6 +164,7 @@ const Project = () => {
                 renderContent={modal => (
                   <IssueCreate
                     userId={loggedUser.username} token={loggedUser.token} role={userRole}
+                    userInfo={data}
                     onCreate={() => {}}
                     modalClose={modal.close}
                   />

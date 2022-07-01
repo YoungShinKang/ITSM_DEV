@@ -1,6 +1,6 @@
 import moment from 'moment';
 
-export const formatDate = (date, format = 'MMMM D, YYYY') =>
+export const formatDate = (date, format = 'YYYY-MM-DD') =>
   date ? moment(date).format(format) : date;
 
 export const formatDateTime = (date, format = 'MMMM D, YYYY, h:mm A') =>
@@ -9,7 +9,7 @@ export const formatDateTime = (date, format = 'MMMM D, YYYY, h:mm A') =>
 export const formatDateTimeForAPI = date =>
   date
     ? moment(date)
-        .utc()
+        .local()
         .format()
     : date;
 

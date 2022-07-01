@@ -40,6 +40,7 @@ const ProjectIssueCreate = ({ project, fetchProject, onCreate, modalClose }) => 
 
   const { currentUserId } = useCurrentUser();
 
+
   return (
     <Form
       enableReinitialize
@@ -57,6 +58,7 @@ const ProjectIssueCreate = ({ project, fetchProject, onCreate, modalClose }) => 
         reporterId: Form.is.required(),
         priority: Form.is.required(),
       }}
+
       onSubmit={async (values, form) => {
         try {
           await createIssue({
