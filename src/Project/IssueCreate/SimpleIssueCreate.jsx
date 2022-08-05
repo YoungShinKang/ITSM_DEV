@@ -9,6 +9,7 @@ import IssueTypeIcon from 'common/components/IssueTypeIcon/IssueTypeIcon';
 import authContext from 'common/utils/authContext';
 import { useNavigate,useLocation } from 'react-router-dom'
 import toast from 'common/utils/toast';
+import { getTextContentsFromHtmlString } from 'common/utils/browser';
 
 import {
   FormHeading,
@@ -102,10 +103,56 @@ const ProjectIssueCreate = ({ userId, token, role, userInfo,  onCreate, modalClo
         title: Form.is.required(),        
       }}
 
-      onSubmit={(values, form) => {
-        console.log('values :'+JSON.stringify(values));
-        console.log('role :'+ role);
-        console.log('userInfo :'+JSON.stringify(userInfo));           
+      onSubmit={async (values, form) => {
+
+        const req_date = new Date();
+
+        const req_dt_day = req_date.toISOString().split('T')[0];
+        const req_dt_hour = req_date.getHours();
+        const req_dt_min = req_date.getMinutes();
+
+        values.content = getTextContentsFromHtmlString(values.content).trim();
+
+        try {
+          await createIssue({
+            ...values,
+            req_dt_day: `${req_dt_day}`,
+            req_dt: req_dt_day+req_dt_hour+req_dt_min,
+            req_dt_hour: `${req_dt_hour}`,
+            req_dt_min: `${req_dt_min}`,
+            due_dt_day: `${dateValue}`,
+            due_dt: dateValue+'2359',
+            due_dt_hour: '23',
+            due_dt_min: '59',
+            sr_id : `${data.resultMap.sr_id}`,
+            nbpm_task_id : '',
+            nbpm_task_name : `${data.resultMap.nbpm_task_name}`,
+            nbpm_user_id : `${data.resultMap.nbpm_user_id}`,
+            nbpm_process_type : `${data.resultMap.nbpm_process_type}`,
+            nbpm_processId : `${data.resultMap.nbpm_processId}`,
+            nbpm_processInstanceId : `${data.resultMap.nbpm_processInstanceId}`,
+            nbpm_version : `${data.resultMap.nbpm_version}`,
+            req_type : `${data.resultMap.req_type}`,
+            gridMapList: [],
+            nbpm_operList: [],
+            child_sr_data: [],
+            workType: 'comp',
+            loginId: `${data.resultMap.nbpm_user_id}`,
+            up_sr_id: '',
+            queryKey: 'countPROC_SERVICE,insertPROC_SERVICE,updatePROC_SERVICE2',
+            //user id 부분이 누락되어 있어서 추가함
+            user_id:userId,
+            headers : {
+              'Content-Type': 'application/json',
+              'Authorization': loggedIn ? `Bearer ${loggedUser.token}` : undefined,
+            },
+            isAuthHeader : true,
+          });
+          toast.success('Issue has been successfully created.');
+          //onCreate();
+        } catch (error) {
+          toast.error(error);
+        }
       }}
     >
       <FormElement>
@@ -131,6 +178,8 @@ const ProjectIssueCreate = ({ userId, token, role, userInfo,  onCreate, modalClo
           renderValue={renderType}
         />  
         <Form.Field.DatePicker
+          name="due_dt_day"
+          label="서비스 유형"
           withTime={false}
           value={dateValue}
           onChangeCallback={onRequestDateChange}

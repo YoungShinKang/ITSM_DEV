@@ -81,7 +81,7 @@ const SimpleIssueDetail = ({srId, modalClose}) => {
       <Content>
         <Left>
           <Title issue={issue}  />          
-          <Description issue={issue} />          
+          <Description issue={issue} />  
           <Comments issue={issue} />
         </Left>
       </Content>

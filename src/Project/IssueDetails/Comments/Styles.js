@@ -1,9 +1,10 @@
 import styled from 'styled-components';
 
-import { font } from 'common/utils/styles';
+import { color, font } from 'common/utils/styles';
 
 export const Comments = styled.div`
   padding-top: 40px;
+  border-top: 1px solid ${color.borderLightest};
 `;
 
 export const Title = styled.div`

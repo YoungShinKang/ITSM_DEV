@@ -57,8 +57,6 @@ const Project = () => {
       return <PageLoader />;
     }
 
-    console.log('data :'+JSON.stringify(data));  
-
     const sysAuthList = data.sysAuthList;
 
     //여기서 rows를 검사해서 Role을 뽑아낸다.
@@ -160,7 +158,7 @@ const Project = () => {
                 testid="modal:issue-create"
                 width={800}
                 withCloseIcon={false}
-                onClose={issueCreateModalHelpers.close}
+                onClose={() => navigate(`/project/dashBoard`, {replace: true})}
                 renderContent={modal => (
                   <IssueCreate
                     userId={loggedUser.username} token={loggedUser.token} role={userRole}
