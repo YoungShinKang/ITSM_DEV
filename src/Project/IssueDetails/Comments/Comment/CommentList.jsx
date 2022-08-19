@@ -11,6 +11,10 @@ import {
   Body,
 } from './Styles';
 
+import {
+  IssueStatusCopy,
+} from 'common/constants/issues';
+
 const propTypes = {
   comment: PropTypes.object.isRequired,
 };
@@ -23,7 +27,7 @@ const ProjectBoardCommentList = ({ comment }) => {
   return (
     <Comment data-testid="issue-comment">
       <Content>
-        <Username>{comment.WORK_USER_NM}</Username>
+        <Username>{comment.WORK_USER_NM + ' (' + IssueStatusCopy[comment.TASK_NAME] + ')'}</Username>
         <CreatedAt>{formatDateTimeConversational(comment.WORK_DATE)}</CreatedAt>
         <Fragment>
           <Body>{comment.TEXT}</Body>
