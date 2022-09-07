@@ -1,6 +1,7 @@
 import React, { Fragment, useState } from 'react';
 import PropTypes from 'prop-types';
 import Icon from 'common/components/Icon/Icon';
+import AwesomeIcon from 'common/components/Icon/AwesomeIcon';
 
 
 import { formatDateTimeConversational } from 'common/utils/dateTime';
@@ -27,8 +28,13 @@ const ProjectBoardCommentList = ({ comment }) => {
 
   return (
     <Comment data-testid="issue-comment">
+      {/*
       <Icon type="attach" size={15} />
+      */}
+      
       <Content>        
+        <AwesomeIcon type="addressCard" size={15} />
+        &nbsp;&nbsp;&nbsp;
         <Username>{comment.WORK_USER_NM + ' (' + IssueStatusCopy[comment.TASK_NAME] + ')'}</Username>
         <CreatedAt>{formatDateTimeConversational(comment.WORK_DATE)}</CreatedAt>
         <Fragment>

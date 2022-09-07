@@ -69,6 +69,20 @@ export const issueStatusBackgroundColors = {
   [IssueStatus.DONE]: color.success,
 };
 
+export const issueTitleBarColors = {
+  'status': color.textDark,
+  'reporter': color.textDark,
+  'assingnee': color.textDark,
+  'developer': color.textDark,
+};
+
+export const issueTitleBarBackgroundColors = {
+  'status': color.backgroundMedium,
+  'reporter': color.backgroundMedium,
+  'assingnee': color.backgroundMedium,
+  'developer': color.backgroundMedium,
+};
+
 export const sizes = {
   appNavBarLeftWidth: 64,
   secondarySideBarWidth: 0,

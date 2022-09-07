@@ -12,7 +12,7 @@ import Delete from './Delete/Delete';
 import Title from './Title/Title';
 import Description from './Description/Description';
 import Comments from './Comments/Comments';
-import Status from './Status/Status';
+import TitleBar from './TitleBar/TitleBar';
 import AssigneesReporter from './AssigneesReporter/AssigneesReporter';
 import Priority from './Priority/Priority';
 import EstimateTracking from './EstimateTracking/EstimateTracking';
@@ -21,6 +21,7 @@ import { TopActions, TopActionsRight, Content, Left, Right } from './Styles';
 import authContext from 'common/utils/authContext';
 import { useNavigate,useLocation } from 'react-router-dom'
 import toast from 'common/utils/toast';
+import IssueStatusList from './IssueStatusList/IssueStatusList';
 
 const propTypes = {
   srId: PropTypes.string.isRequired,
@@ -84,6 +85,9 @@ const SimpleIssueDetail = ({srId, modalClose}) => {
           <Description issue={issue} />  
           <Comments issue={issue} />
         </Left>
+        <Right>
+          <IssueStatusList issue={issue}  />
+        </Right>
       </Content>
     </Fragment>
   );

@@ -15,7 +15,6 @@ import Delete from './Delete/Delete';
 import Title from './Title/Title';
 import Description from './Description/Description';
 import Comments from './Comments/Comments';
-import Status from './Status/Status';
 import AssigneesReporter from './AssigneesReporter/AssigneesReporter';
 import Priority from './Priority/Priority';
 import EstimateTracking from './EstimateTracking/EstimateTracking';
@@ -75,7 +74,7 @@ const ProjectBoardIssueDetails = ({
           <Comments issue={issue} fetchIssue={fetchIssue} />
         </Left>
         <Right>
-          <Status issue={issue} updateIssue={updateIssue} />
+          
           {/*
           <AssigneesReporter issue={issue} updateIssue={updateIssue} projectUsers={projectUsers} />
           */}
