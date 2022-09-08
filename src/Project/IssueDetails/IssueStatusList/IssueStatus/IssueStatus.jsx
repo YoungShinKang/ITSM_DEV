@@ -13,8 +13,8 @@ const ProjectIssueStatus = ({ comment }) => {
   return (
     <Status>
       <Title>{comment.NODENAME}</Title>
-      <TitleBar title={'담당자'} contents={comment.WORK_USER_NM} barType={'REQUEST'} />
-      <TitleBar title={'일자'} contents={comment.WORK_DATE} barType={comment.TASK_NAME} />
+      <TitleBar title={'담당자'} contents={comment.WORK_USER_NM} barType={'status'} />
+      <TitleBar title={'일자'} contents={comment.WORK_DATE} barType={'RESULT'} />
     </Status>
   );
 };
