@@ -17,9 +17,11 @@ const StatusList = ({ issue }) => {
     <List>
       <Title>서비스 처리 현황</Title>
       <Statuses>
+        
         {issue.nbpm_commentList.map((comment, index) => (
               <IssueStatus comment={comment} />
         ))}
+        
       </Statuses>
     </List>
   );
