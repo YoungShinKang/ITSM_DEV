@@ -11,10 +11,10 @@ const fontIconCodes = {
   'reporter': '\\f659',
   'assignee': '\\e04c',
   'developer': '\\f5fc',
-  'REQUEST': '\\f659',
-  'SERVICE_GROUP': '\\e533',
+  'REQUEST': '\\f128',
+  'SERVICE_GROUP': '\\f055',
   'SERVICE_RESULT_INSERT': '\\f5fc',
-  'SERVICE_CHECK': '\\f316',
+  'SERVICE_CHECK': '\\f604',
   'RESULT': '\\f681',
   'END': '\\f253',
 };

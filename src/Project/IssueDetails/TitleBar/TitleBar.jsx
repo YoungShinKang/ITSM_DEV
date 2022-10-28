@@ -1,19 +1,16 @@
 import React, { Fragment } from 'react';
 
-import AwesomeIcon from 'common/components/Icon/AwesomeIcon';
 
 import { SectionTitle } from '../Styles';
-import { TitleBar } from './Styles';
+import { TitleBar, TitleBar2 } from './Styles';
 
 const ProjectBoardIssueDetailsTitleBar = ({ title, contents, barType,}) => (
-  <Fragment>
+  <div>
     <SectionTitle>{title}</SectionTitle>
-    <TitleBar color={barType}>
-      <AwesomeIcon type={barType} size={15} />      
-      &nbsp;&nbsp;&nbsp;
+    <TitleBar2 color={barType}>
       <div>{contents}</div>
-    </TitleBar>
-  </Fragment>
+    </TitleBar2>
+  </div>
 );
 
 export default ProjectBoardIssueDetailsTitleBar;

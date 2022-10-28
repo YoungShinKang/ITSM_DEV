@@ -3,7 +3,8 @@ import styled, { css } from 'styled-components';
 import { color, font, mixin } from 'common/utils/styles';
 
 export const Status = styled.div`
-  padding: 5px 5px 5px 10px;
+  margin: 10px 10px 0px 0px;
+  padding: 5px 5px 5px 0px;
   border-radius: 3px;
   background: #fff;
   box-shadow: 0px 1px 2px 0px rgba(9, 30, 66, 0.25);
@@ -18,12 +19,12 @@ export const Status = styled.div`
   }
 `;
 
-export const Title = styled.p`
-  padding-bottom: 5px;
-  ${font.size(15)}
-  @media (max-width: 1100px) {
-    ${font.size(14.5)}
-  }
+export const Title = styled.div`
+  display: inline-block;
+  padding-right: 12px;
+  padding-bottom: 10px;
+  color: ${color.textDark};
+  ${font.medium}
 `;
 
 export const Bottom = styled.div`
