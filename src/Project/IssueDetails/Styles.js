@@ -33,6 +33,7 @@ export const TopActionsRight = styled.div`
 
 export const SectionTitle = styled.div`
   margin: 5px 0 5px;
+  display: inline-block;
   text-transform: uppercase;
   color: ${color.textMedium};
   ${font.size(12.5)}

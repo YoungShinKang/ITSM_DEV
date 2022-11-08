@@ -22,7 +22,6 @@ export const TitleBar = styled.div`
 export const TitleBar2 = styled.div`
   text-transform: uppercase;
   transition: all 0.1s;
-  display: inline-block;
   width: 70%;
   ${font.size(20)}
   ${props => mixin.tag(issueTitleBarBackgroundColors[props.color], issueTitleBarColors[props.color])}
