@@ -22,6 +22,7 @@ import authContext from 'common/utils/authContext';
 import { useNavigate,useLocation } from 'react-router-dom'
 import toast from 'common/utils/toast';
 import IssueStatusList from './IssueStatusList/IssueStatusList';
+import IssueProcess from './IssueProcess/IssueProcess'
 
 const propTypes = {
   srId: PropTypes.string.isRequired,
@@ -70,6 +71,7 @@ const SimpleIssueDetail = ({srId, modalClose}) => {
   
   return (
     <Fragment>
+      <IssueProcess issue={issue}  />
       <TopActions>
         <Type issue={issue} />
         <TopActionsRight>
@@ -77,7 +79,7 @@ const SimpleIssueDetail = ({srId, modalClose}) => {
           <Delete issue={issue} />
           */}          
           <Button icon="close" iconSize={24} variant="empty" onClick={modalClose} />          
-        </TopActionsRight>
+        </TopActionsRight>        
       </TopActions>
       <Content>
         <Left>
@@ -87,6 +89,7 @@ const SimpleIssueDetail = ({srId, modalClose}) => {
         </Left>
         <Right>
           <IssueStatusList issue={issue}  />
+          
         </Right>
       </Content>
     </Fragment>

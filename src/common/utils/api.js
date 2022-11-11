@@ -19,10 +19,18 @@ const defaults = {
 
 const api = (method, url, variables) => 
   new Promise((resolve, reject) => {
+
+    let tmpHeader = {...variables.headers};
+    let isAuthHeader = variables.isAuthHeader;
+
+    delete variables.headers;
+    delete variables.isAuthHeader;
+
     axios({
       url: `${defaults.baseURL}${url}`,
       method,
-      headers: variables.isAuthHeader ?  variables.headers : defaults.headers(),
+      //headers: variables.isAuthHeader ?  variables.headers : defaults.headers(),
+      headers: isAuthHeader ?  tmpHeader : defaults.headers(),
       params: method === 'get' ? variables : undefined,
       data: method !== 'get' ? variables : undefined,
       paramsSerializer: objectToQueryString,

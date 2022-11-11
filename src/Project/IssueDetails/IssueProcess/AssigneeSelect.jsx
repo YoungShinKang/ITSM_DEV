@@ -1,8 +1,9 @@
-import React, { useEffect, useState, } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import PropTypes from 'prop-types';
 
 import useApi from 'common/hooks/api';
 import Form from 'common/components/Form/Form';
+import authContext from 'common/utils/authContext';
 import SystemTypeIcon from 'common/components/SystemTypeIcon/SystemTypeIcon';
 import {
   SelectItem,
@@ -11,22 +12,24 @@ import {
 
 const propTypes = {
   srId: PropTypes.string.isRequired,
-  token: PropTypes.string.isRequired,
+  callBack: PropTypes.func.isRequired,
 };
 
 let optionsCopy = [];
 
-const SystemTypeSelect = ({ srId, token, }) => {
+const AssigneeSelect = ({ srId, callBack}) => {
+
+  const { loggedUser, loggedIn } = useContext(authContext);
   
   const propsVariables = {
     headers : {
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${token}`
+      'Authorization': loggedIn ? `Bearer ${loggedUser.token}` : undefined,
     },
     isAuthHeader : true,
   }
 
-  const [{ data, error, setLocalData }, ] = useApi.get(`/base/searchServiceCombo/${userId}`,propsVariables);
+  const [{ data, error, setLocalData }, ] = useApi.get(`/base/searchOperUserCombo/${srId}`,propsVariables);
 
   const [ options, setOptions ] = useState([]);
 
@@ -44,7 +47,9 @@ const SystemTypeSelect = ({ srId, token, }) => {
     label: option.USER_NM,
   }));
 
-
+  const onChangeCallback = userId => {
+    callBack(optionsCopy.find(option => option.USER_ID === userId ).USER_NM);
+  }
 
   return (
     <Form.Field.Select
@@ -53,23 +58,19 @@ const SystemTypeSelect = ({ srId, token, }) => {
       options={typeOptions}
       renderOption={renderType}
       renderValue={renderType}
+      onSelect={onChangeCallback}
     />
   );
 
 };
 
-const renderType = ({ value: USER_ID }) => (
+const renderType = ({ label: USER_NM }) => (
   <SelectItem>
-    <SystemTypeIcon type={'help'} top={1} />
-    {/*
-    이건 되지 않는다. options는 참조가 불가능한 배열이다. 스코프가 안쪽이다.
-    <SelectItemLabel>{options.find(option => option.CODE_ID === CODE_ID ).CODE_TEXT}</SelectItemLabel>
-    아래와 같이 바깥에 하나 더 만들어서 그걸 사용해야 한다. optionsCopy는 밖에서 초기화 되었다.
-    */}
-    <SelectItemLabel>{optionsCopy.find(option => option.USER_ID === USER_ID ).USER_NM}</SelectItemLabel>
+    <SystemTypeIcon type={'help'} top={1} />    
+    <SelectItemLabel>{USER_NM}</SelectItemLabel>
   </SelectItem>
 );
 
-SystemTypeSelect.propTypes = propTypes;
+AssigneeSelect.propTypes = propTypes;
 
-export default SystemTypeSelect;
+export default AssigneeSelect;

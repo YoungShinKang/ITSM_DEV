@@ -179,7 +179,7 @@ const ProjectIssueCreate = ({ userId, token, role, userInfo,  onCreate, modalClo
         />  
         <Form.Field.DatePicker
           name="due_dt_day"
-          label="서비스 유형"
+          label="서비스 Due"
           withTime={false}
           value={dateValue}
           onChangeCallback={onRequestDateChange}
