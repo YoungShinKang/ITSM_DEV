@@ -108,8 +108,8 @@ const ProjectIssueCreate = ({ userId, token, role, userInfo,  onCreate, modalClo
         const req_date = new Date();
 
         const req_dt_day = req_date.toISOString().split('T')[0];
-        const req_dt_hour = req_date.getHours();
-        const req_dt_min = req_date.getMinutes();
+        const req_dt_hour = req_date.getHours() < 10 ? '0' + req_date.getHours() : req_date.getHours();
+        const req_dt_min = req_date.getMinutes() < 10 ? '0' + req_date.getMinutes() : req_date.getMinutes();
 
         values.content = getTextContentsFromHtmlString(values.content).trim();
 

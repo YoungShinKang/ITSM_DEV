@@ -5,6 +5,8 @@ import { ProcessBox, Process} from './IssueProcessStyles';
 import { SectionTitle } from '../Styles';
 
 import ServiceGroupProcess from './ServiceGroupProcess'
+import ResultInsertProcess from './ResultInsertProcess'
+import CheckProcess from './CheckProcess'
 
 const propTypes = {
   issue: PropTypes.object.isRequired,
@@ -21,8 +23,14 @@ const IssueProcess = ({ issue }) => {
       <Process>
         
         {
-          issue.WORK_STATE == 'REQUEST' && <ServiceGroupProcess issue={issue} />
+          issue.WORK_STATE == 'REQUEST' && <ServiceGroupProcess issue={issue} />          
         }  
+        {
+          issue.WORK_STATE == 'SERVICE_GROUP' && <ResultInsertProcess issue={issue} />
+        } 
+        {
+          issue.WORK_STATE == 'SERVICE_RESULT_INSERT' && <CheckProcess issue={issue} />
+        } 
         
       </Process>
     </ProcessBox>

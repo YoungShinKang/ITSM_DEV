@@ -50,35 +50,35 @@ const ServiceGroupProcess = ({ issue }) => {
 
         try {
           await createIssue({
-            ROLE2_user_id: values.assignee,  	//이관을 받은 개발자
+            ROLE2_user_id: values.assignee,  	      //이관을 받은 개발자
             nbpm_comment: values.nbpm_commnet,			//이관 떄 넣은 코멘트
-            result_hope_dt_day: dateValue,	//이관 때 넣은 날짜
-            result_hope_dt: dateValue+'2359',	//이관 때 넣은 날짜
-            result_hope_dt_hour: '23',	//이관 때 넣은 날짜
-            result_hope_dt_min: '59',	//이관 때 넣은 날짜
-            sr_id: issue.SR_ID, //SR 아이디
-            nbpm_task_id: '0',	//고정값
-            nbpm_task_name: 'REQUEST',	//고정값
-            nbpm_user_id: loggedUser.username,	//이관을 하는 ID, 로그인 ID
-            nbpm_process_type: 'SERVICE',	//고정값
-            nbpm_processId: '',	//고정값
-            nbpm_processInstanceId: '0',	//고정값
-            nbpm_version: '1',	//고정값
-            req_type: 'SERVICE',	//고정값
-            gridMapList: [],	//고정값
+            result_hope_dt_day: dateValue,	        //이관 때 넣은 날짜
+            result_hope_dt: dateValue+'2359',	      //이관 때 넣은 날짜
+            result_hope_dt_hour: '23',	            //이관 때 넣은 날짜
+            result_hope_dt_min: '59',	              //이관 때 넣은 날짜
+            sr_id: issue.SR_ID,                     //SR 아이디
+            nbpm_task_id: '0',	                    //고정값
+            nbpm_task_name: 'REQUEST',	            //고정값
+            nbpm_user_id: loggedUser.username,	    //이관을 하는 ID, 로그인 ID
+            nbpm_process_type: 'SERVICE',	          //고정값
+            nbpm_processId: '',	                    //고정값
+            nbpm_processInstanceId: '0',	          //고정값
+            nbpm_version: '1',	                    //고정값
+            req_type: 'SERVICE',	                  //고정값
+            gridMapList: [],	                      //고정값
             nbpm_operList: [
                 {
-                    select_type: 'SINGLE',	//고정값
-                    oper_type: 'ROLE2',	//고정값
+                    select_type: 'SINGLE',	        //고정값
+                    oper_type: 'ROLE2',	            //고정값
                     oper_user_id: values.assignee,	//이관을 받은 개발자
-                    oper_user_name: operUserNm	//이관을 받은 개발자 이름
+                    oper_user_name: operUserNm	    //이관을 받은 개발자 이름
                 }
             ],
             originSrData: issue,
-            child_sr_data: [],	//고정값
-            workType: 'transfer',	//고정값
-            loginId: loggedUser.username,	//로그인 ID
-            queryKey: 'updatePROC_SERVICE',	//고정값
+            child_sr_data: [],	                    //고정값
+            workType: 'transfer',	                  //고정값
+            loginId: loggedUser.username,	          //로그인 ID
+            queryKey: 'updatePROC_SERVICE',	        //고정값
             headers : {
               'Content-Type': 'application/json',
               'Authorization': loggedIn ? `Bearer ${loggedUser.token}` : undefined,

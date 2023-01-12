@@ -12,7 +12,9 @@ const ProjectBoard = () => {
   //혹은 Role에 따라서 여기서 다르게 지정 할 수 있다.
   const IssueStatus = { 
     REQUEST : 'REQUEST',  //REQUESTOR
-    SERVICE_CHECK : 'SERVICE_GROUP',  //SERVICEDESK
+    SERVICE_GROUP : 'SERVICE_GROUP',  //SERVICEDESK
+    SERVICE_RESULT_INSERT : 'SERVICE_RESULT_INSERT',
+    SERVICE_CHECK : 'SERVICE_CHECK',
   };
 
   return (
